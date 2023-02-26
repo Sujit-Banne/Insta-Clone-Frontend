@@ -21,7 +21,6 @@ const Createpost = () => {
                     title,
                     body,
                     pic: url
-
                 })
             }).then(res => res.json())
                 .then(data => {
