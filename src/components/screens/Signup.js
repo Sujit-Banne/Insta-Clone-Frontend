@@ -8,7 +8,7 @@ const Signup = () => {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const PostData = () => {
-        fetch("https://insta-clone-backend-bj12.onrender.com/signup", {
+        fetch("/signup", {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
