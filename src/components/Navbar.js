@@ -1,23 +1,34 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../App'
 import Logo from '../images/logo.PNG'
 import Camera from '../images/camera_icon.jpg'
 const Navbar = () => {
+    const navigate = useNavigate()
     const { state, dispatch } = useContext(UserContext)
+
     const renderList = () => {
         if (state) {
             return [
                 <>
-                    <li key="1"><Link to="/Profile">Profile</Link></li>
-                    <li key="2"><Link to="/create"><img src={Camera} alt="Camera" className='camera' /></Link></li>
+                    <li><Link to="/Profile">Profile</Link></li>,
+                    <li><Link to="/create"><img src={Camera} alt="Camera" className='camera' /></Link></li>,
+                    <li>
+                        <button className="btn waves-effect waves-light" onClick={() => {
+                            localStorage.clear()
+                            dispatch({ type: "CLEAR" })
+                            navigate("/Signin")
+                        }}>
+                            Logout
+                        </button>
+                    </li>,
                 </>
             ]
         } else {
             return (
                 <>
-                    <li key="3"><Link to="/Signin">Login</Link></li>
-                    <li key="4"><Link to="/Signup">Signup</Link></li>
+                    <li><Link to="/Signin">Login</Link></li>,
+                    <li><Link to="/Signup">Signup</Link></li>,
                 </>
             )
         }

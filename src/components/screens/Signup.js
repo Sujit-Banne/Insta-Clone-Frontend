@@ -7,37 +7,39 @@ const Signup = () => {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-    const PostData = () => {
-        fetch("/signup", {
-            method: "post",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                name,
-                password,
-                email
-            })
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
+    const PostData = async () => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            M.toast({ html: "invalid email", classes: "#c62828 red darken-3" })
+            return;
+        }
+        // else if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password)){
+        //   M.toast({html: "Invalid password. Your password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long.",
+        //    classes:"#c62828 red darken-3"})
+        //    return;
+
+        // }
+        try {
+            const response = await fetch("https://insta-clone-backend-c9ov.onrender.com/signup", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name,
+                    password,
+                    email,
+                }),
+            });
+            const data = await response.json();
+            if (data.error) {
+                M.toast({ html: data.error, classes: "#c62828 red darken-3" });
             } else {
-                throw new Error('Network response was not ok.');
+                M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+                navigate("/signin");
             }
-        })
-            .then(data => {
-                if (data.error) {
-                    M.toast({ html: data.error })
-                }
-                else {
-                    M.toast({ html: data.message })
-                    navigate("/Signin")
-                }
-            }).catch(error => {
-                console.error('Error fetching data:', error);
-                M.toast({ html: 'Error signing in. Please try again later.' });
-            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (

@@ -11,7 +11,7 @@ const Createpost = () => {
 
     useEffect(() => {
         if (url) {
-            fetch('/createpost', {
+            fetch('https://insta-clone-backend-c9ov.onrender.com/createpost', {
                 method: "post",
                 headers: {
                     'Content-Type': 'application/json',
@@ -22,21 +22,24 @@ const Createpost = () => {
                     body,
                     pic: url
                 })
-            }).then(res => res.json())
-                .then(data => {
-                    console.log(data);
+            })
+                .then((res) => res.json())
+                .then((data) => {
                     if (data.error) {
-                        M.toast({ html: data.error })
+                        M.toast({ html: data.error, classes: "#c62828 red darken-3" });
+                    } else {
+                        M.toast({
+                            html: "Posted Successfully",
+                            classes: "#43a047 green darken-1",
+                        });
+                        navigate("/");
                     }
-                    else {
-                        M.toast({ html: 'created post successfully' })
-                        navigate("/")
-                    }
-                }).catch(err => {
-                    console.log(err);
                 })
+                .catch((err) => {
+                    console.log(err);
+                });
         }
-    }, [url])
+    }, [url, title, body, navigate])
 
     const postDetails = () => {
         //to upload data

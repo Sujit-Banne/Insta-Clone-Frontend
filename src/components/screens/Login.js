@@ -6,44 +6,43 @@ import M from 'materialize-css'
 
 const Login = () => {
     const { state, dispatch } = useContext(UserContext)
-    const navigate = useNavigate()
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-    const PostData = () => {
-        fetch("/signin", {
-            method: "post",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                password,
-                email
-            })
-        })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            })
-            .then(data => {
-                console.log('Response data:', data);
-                if (data.error) {
-                    M.toast({ html: data.error })
-                } else {
-                    localStorage.setItem('jwt', data.token)
-                    localStorage.setItem('user', JSON.stringify(data.user))
-                    dispatch({ type: 'USER', payload: data.user })
-                    M.toast({ html: 'signedIn Success' })
-                    navigate("/")
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                M.toast({ html: 'Error signing in. Please try again later.' });
+    const navigate = useNavigate()
+    const PostData = async () => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            M.toast({ html: "invalid email", classes: "#c62828 red darken-3" })
+            return;
+        }
+
+
+        try {
+            const response = await fetch("https://insta-clone-backend-c9ov.onrender.com/signin", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    password,
+                    email
+                })
             });
+
+            const data = await response.json();
+            console.log(data)
+            if (data.error) {
+                M.toast({ html: data.error, classes: "#c62828 red darken-3" });
+            } else {
+                localStorage.setItem("jwt", data.token)
+                localStorage.setItem("user", JSON.stringify(data.user))
+                dispatch({ type: "USER", payload: data.user })
+                M.toast({ html: "Signin Successfully", classes: "#43a047 green darken-1" });
+                navigate("/");
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     return (
