@@ -20,30 +20,32 @@ const Login = () => {
                 password,
                 email
             })
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw new Error('Network response was not ok.');
-            }
         })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
             .then(data => {
-                console.log(data);
+                console.log('Response data:', data);
                 if (data.error) {
                     M.toast({ html: data.error })
-                }
-                else {
+                } else {
                     localStorage.setItem('jwt', data.token)
                     localStorage.setItem('user', JSON.stringify(data.user))
                     dispatch({ type: 'USER', payload: data.user })
                     M.toast({ html: 'signedIn Success' })
                     navigate("/")
                 }
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.error('Error fetching data:', error);
                 M.toast({ html: 'Error signing in. Please try again later.' });
-            })
+            });
     }
+
     return (
         <div className='mycard'>
             <div className="card auth-card ">
