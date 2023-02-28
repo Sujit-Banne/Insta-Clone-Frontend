@@ -19,7 +19,7 @@ const Signup = () => {
 
         // }
         try {
-            const response = await fetch("https://insta-clone-backend-c9ov.onrender.com/Signup", {
+            const response = await fetch("https://insta-clone-backend-c9ov.onrender.com/signup", {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
