@@ -11,7 +11,8 @@ const Signup = () => {
         fetch("/signup", {
             method: "post",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 name,
@@ -33,8 +34,9 @@ const Signup = () => {
                     M.toast({ html: data.message })
                     navigate("/Signin")
                 }
-            }).catch(err => {
-                console.log(err);
+            }).catch(error => {
+                console.error('Error fetching data:', error);
+                M.toast({ html: 'Error signing in. Please try again later.' });
             })
     }
 
