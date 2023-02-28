@@ -9,15 +9,15 @@ const Navbar = () => {
         if (state) {
             return [
                 <>
-                    <li><Link to="/Profile">Profile</Link></li>
-                    <li><Link to="/create"><img src={Camera} alt="Camera" className='camera' /></Link></li>
+                    <li key="1"><Link to="/Profile">Profile</Link></li>
+                    <li key="2"><Link to="/create"><img src={Camera} alt="Camera" className='camera' /></Link></li>
                 </>
             ]
         } else {
             return (
                 <>
-                    <li><Link to="/Signin">Login</Link></li>
-                    <li><Link to="/Signup">Signup</Link></li>
+                    <li key="3"><Link to="/Signin">Login</Link></li>
+                    <li key="4"><Link to="/Signup">Signup</Link></li>
                 </>
             )
         }
