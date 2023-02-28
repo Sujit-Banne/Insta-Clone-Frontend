@@ -20,7 +20,13 @@ const Login = () => {
                 password,
                 email
             })
-        }).then(res => res.json())
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+        })
             .then(data => {
                 console.log(data);
                 if (data.error) {
@@ -33,8 +39,9 @@ const Login = () => {
                     M.toast({ html: 'signedIn Success' })
                     navigate("/")
                 }
-            }).catch(err => {
-                console.log(err);
+            }).catch(error => {
+                console.error('Error fetching data:', error);
+                M.toast({ html: 'Error signing in. Please try again later.' });
             })
     }
     return (
